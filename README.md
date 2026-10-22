@@ -36,6 +36,8 @@ Each run ends with `ALL CHECKS PASSED` (or a summary for `verify_answers.py`).
 
 `tracker_Counting_Steps.xlsx` — task table: stage, task, owner, reviewer, status, comment.
 
+
+
 ## Group
 
 Beiimbet Sansyzbay, Arunaz Makhabayeva, Nurbol Sairambay
