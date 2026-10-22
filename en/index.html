@@ -940,7 +940,7 @@ else return −1</pre>
   <figure class="fig" data-chart="avg">
     <p class="ft">Does the formula match a simulation?</p>
     <div class="chartroot"></div>
-    <figcaption>The page runs the actual search on random inputs and averages the number of comparisons. The simulated mean is never exactly equal to the formula, but it settles near it as the number of trials grows.</figcaption>
+    <figcaption>The page runs the actual search on random inputs and averages the number of comparisons. The blue line is the running mean of the simulated comparison counts and the dashed orange line is the formula. The simulated mean is never exactly equal to the formula, but the blue line settles onto the orange one as the number of trials grows.</figcaption>
   </figure>
 
   <div class="box warn">
@@ -2504,6 +2504,7 @@ def run_e2():
       g_so_far: 'iterations so far: {0} of {1}', g_read: 'highlighted cells: {0}   formula {1} = {2}   {3}', eq: '✓ equal', ne: '✗ differ',
       press_run: 'Press Run.', trials: '{0} trials', p_success: 'p (success)',
       avg_read: 'simulated mean {0}   formula p(n+1)/2 + n(1−p) = {1}   difference {2}',
+      avg_x: 'number of trials (log scale)', avg_y: 'mean comparisons so far', avg_leg_sim: 'simulated running mean', avg_leg_f: 'formula p(n+1)/2 + n(1−p) = {0}', avg_note: 'The first few points are off the scale on purpose: one trial is very noisy.', alt_avg: 'Running mean of the simulated comparison count against the number of trials, converging to the horizontal formula line',
       p_measured: 'measured count {0}', p_formula: 'formula {0} = {1}{2}{3}',
       p_doubling: 'doubling test: count(2n)/count(n) = {0}   (2 means Θ(n), 4 means Θ(n²), 8 means Θ(n³), a value near 1 means Θ(log n) or Θ(1))',
       p_measured2: 'measured operations {0}', p_calls: 'calls made {0}', p_callsf: '   (formula 2F(n+1) − 1 = {0})', p_depth: '   deepest stack level {0}', p_depthf: '   (formula {0} = {1})',
@@ -2550,6 +2551,7 @@ def run_e2():
       g_so_far: 'итераций пока: {0} из {1}', g_read: 'закрашенных клеток: {0}   формула {1} = {2}   {3}', eq: '✓ равны', ne: '✗ различаются',
       press_run: 'Нажмите «Запустить».', trials: '{0} испытаний', p_success: 'p (успех)',
       avg_read: 'среднее по симуляции {0}   формула p(n+1)/2 + n(1−p) = {1}   разница {2}',
+      avg_x: 'число испытаний (логарифмическая шкала)', avg_y: 'среднее число сравнений на данный момент', avg_leg_sim: 'среднее по симуляции (накопленное)', avg_leg_f: 'формула p(n+1)/2 + n(1−p) = {0}', avg_note: 'Первые точки намеренно выходят за шкалу: одно испытание даёт очень большой разброс.', alt_avg: 'Накопленное среднее числа сравнений в симуляции в зависимости от числа испытаний; оно приближается к горизонтальной линии формулы',
       p_measured: 'измерено {0}', p_formula: 'формула {0} = {1}{2}{3}',
       p_doubling: 'проверка удвоением: count(2n)/count(n) = {0}   (2 означает Θ(n), 4 означает Θ(n²), 8 означает Θ(n³), значение около 1 означает Θ(log n) или Θ(1))',
       p_measured2: 'измерено операций {0}', p_calls: 'сделано вызовов {0}', p_callsf: '   (формула 2F(n+1) − 1 = {0})', p_depth: '   наибольшая глубина стека {0}', p_depthf: '   (формула {0} = {1})',
@@ -2596,6 +2598,7 @@ def run_e2():
       g_so_far: 'қазірге дейінгі итерация: {0} / {1}', g_read: 'боялған торлар: {0}   формула {1} = {2}   {3}', eq: '✓ тең', ne: '✗ тең емес',
       press_run: '«Іске қосу» батырмасын басыңыз.', trials: '{0} сынақ', p_success: 'p (сәттілік)',
       avg_read: 'симуляциядағы орташа {0}   формула p(n+1)/2 + n(1−p) = {1}   айырмасы {2}',
+      avg_x: 'сынақ саны (логарифмдік шкала)', avg_y: 'осы кезге дейінгі орташа салыстыру саны', avg_leg_sim: 'симуляциядағы жинақталған орташа', avg_leg_f: 'формула p(n+1)/2 + n(1−p) = {0}', avg_note: 'Алғашқы нүктелер әдейі шкаладан тыс: бір сынақтың шашырауы өте үлкен.', alt_avg: 'Салыстыру санының жинақталған орташасы сынақ санына байланысты; ол формуланың көлденең сызығына жақындайды',
       p_measured: 'өлшенгені {0}', p_formula: 'формула {0} = {1}{2}{3}',
       p_doubling: 'екі еселеу тексеруі: count(2n)/count(n) = {0}   (2 — Θ(n), 4 — Θ(n²), 8 — Θ(n³), 1-ге жақын мән — Θ(log n) немесе Θ(1))',
       p_measured2: 'өлшенген операциялар {0}', p_calls: 'шақыру саны {0}', p_callsf: '   (формула 2F(n+1) − 1 = {0})', p_depth: '   стектің ең үлкен тереңдігі {0}', p_depthf: '   (формула {0} = {1})',
@@ -3092,24 +3095,70 @@ def run_e2():
       var tSel = h('select', { id: 'avg-trials' }, [100, 1000, 10000, 100000].map(function (k) { return h('option', { value: k, text: t('trials', sep(k)) }); }));
       tSel.value = '10000';
       var run = h('button', { type: 'button', class: 'btn', text: t('run') });
+      var holder = h('div'), legend = h('div', { class: 'legend' });
+
+      // running mean against the number of trials (log x), with the formula as a horizontal line
+      function draw(pts, f, n, p, TT) {
+        var W = 640, H = 340, ml = 62, mr = 16, mt = 26, mb = 44, pw = W - ml - mr, ph = H - mt - mb;
+        var lx1 = Math.log10(TT) || 1;
+        function X(k) { return ml + Math.log10(k) / lx1 * pw; }
+        // y range: centred on the formula, wide enough for every point after the first few trials
+        var dev = 0;
+        pts.forEach(function (q) { if (q[0] >= Math.min(10, TT)) dev = Math.max(dev, Math.abs(q[1] - f)); });
+        var half = Math.max(dev * 1.25, 0.02 * Math.max(f, 1), 1e-6);
+        var ys = niceStep(half * 2 / 4), lo = Math.floor((f - half) / ys) * ys, hi = Math.ceil((f + half) / ys) * ys;
+        function Y(v) { return mt + ph - (v - lo) / (hi - lo) * ph; }
+        var dec = ys >= 1 ? 0 : Math.min(4, Math.ceil(-Math.log10(ys)));
+        var svg = s('svg', { class: 'chart', viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': t('alt_avg') });
+        svg.appendChild(s('defs', {}, [s('clipPath', { id: 'avg-clip' }, [s('rect', { x: ml, y: mt - 1, width: pw, height: ph + 2 })])]));
+        for (var v = lo; v <= hi + 1e-9; v += ys) {
+          svg.appendChild(s('line', { x1: ml, x2: ml + pw, y1: Y(v), y2: Y(v), class: 'gridl' }));
+          svg.appendChild(s('text', { x: ml - 8, y: Y(v) + 4, 'text-anchor': 'end', 'font-size': 12, class: 'dim', text: v.toFixed(dec) }));
+        }
+        for (var d = 0; Math.pow(10, d) <= TT; d++) {
+          var xx = X(Math.pow(10, d));
+          svg.appendChild(s('line', { x1: xx, x2: xx, y1: mt + ph, y2: mt + ph + 5, class: 'axis' }));
+          svg.appendChild(s('text', { x: xx, y: mt + ph + 20, 'text-anchor': xx > ml + pw - 24 ? 'end' : 'middle', 'font-size': 12, class: 'dim', text: sep(Math.pow(10, d)) }));
+        }
+        svg.appendChild(s('line', { x1: ml, x2: ml + pw, y1: mt + ph, y2: mt + ph, class: 'axis' }));
+        svg.appendChild(s('line', { x1: ml, x2: ml, y1: mt, y2: mt + ph, class: 'axis' }));
+        svg.appendChild(s('text', { x: ml + pw, y: H - 6, 'text-anchor': 'end', 'font-size': 13, text: t('avg_x') }));
+        svg.appendChild(s('text', { x: ml, y: 14, 'font-size': 12, class: 'dim', text: t('avg_y') }));
+        var g = s('g', { 'clip-path': 'url(#avg-clip)' });
+        g.appendChild(s('line', { x1: ml, x2: ml + pw, y1: Y(f), y2: Y(f), 'stroke-width': 2.4, 'stroke-dasharray': '7 3', style: 'stroke:var(--s2)' }));
+        var dd = pts.map(function (q, i) { return (i ? 'L' : 'M') + X(q[0]).toFixed(1) + ' ' + Y(q[1]).toFixed(1); }).join('');
+        g.appendChild(s('path', { d: dd, fill: 'none', 'stroke-width': 2.2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', style: 'stroke:var(--s1)' }));
+        svg.appendChild(g);
+        var last = pts[pts.length - 1];
+        svg.appendChild(s('circle', { cx: X(last[0]).toFixed(1), cy: Y(last[1]).toFixed(1), r: 4, style: 'fill:var(--s1)' }));
+        holder.innerHTML = ''; holder.appendChild(svg);
+        legend.innerHTML = '';
+        legend.appendChild(h('span', {}, [s('svg', { viewBox: '0 0 30 10' }, [s('line', { x1: 1, x2: 29, y1: 5, y2: 5, 'stroke-width': 2.6, style: 'stroke:var(--s1)' })]), t('avg_leg_sim')]));
+        legend.appendChild(h('span', {}, [s('svg', { viewBox: '0 0 30 10' }, [s('line', { x1: 1, x2: 29, y1: 5, y2: 5, 'stroke-width': 2.6, 'stroke-dasharray': '7 3', style: 'stroke:var(--s2)' })]), t('avg_leg_f', f.toFixed(3))]));
+        legend.appendChild(h('span', { class: 'dim', style: 'color:var(--ink2)', text: t('avg_note') }));
+      }
+
       function go() {
         var n = Math.max(2, Math.min(200, Math.round(+nIn.value) || 20)), p = +pIn.value, TT = +tSel.value;
         nIn.value = n;
         var A = []; for (var i = 0; i < n; i++) A.push(i);
-        var total = 0;
+        var total = 0, pts = [], next = 1;
         for (var tr = 0; tr < TT; tr++) {
           var K = Math.random() < p ? Math.floor(Math.random() * n) : -1, c = 0, i2 = 0;
           while (i2 < n) { c++; if (A[i2] === K) break; i2++; }
           total += c;
+          if (tr + 1 >= next || tr + 1 === TT) { pts.push([tr + 1, total / (tr + 1)]); next = Math.max(next + 1, Math.ceil(next * 1.12)); }
         }
         var sim = total / TT, f = p * (n + 1) / 2 + n * (1 - p);
         out.innerHTML = '';
         fill(out, T('avg_read', B(sim.toFixed(3)), B(f.toFixed(3)), Math.abs(sim - f).toFixed(3)));
+        draw(pts, f, n, p, TT);
       }
       pIn.addEventListener('input', function () { pOut.textContent = (+pIn.value).toFixed(2); });
       run.addEventListener('click', go);
       box.appendChild(h('div', { class: 'ctl' }, [h('label', {}, ['n ', nIn]), h('label', {}, [t('p_success') + ' ', pIn, pOut]), h('label', {}, [tSel]), run]));
       box.appendChild(out);
+      box.appendChild(holder); box.appendChild(legend);
       go();
     },
 
