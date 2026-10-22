@@ -1,4 +1,4 @@
-# Counting Steps — e-textbook on algorithm analysis
+# Algorithm Analysis: Counting Steps — e-textbook on algorithm analysis
 
 Mathematical analysis of nonrecursive (Lecture 4) and recursive (Lecture 5) algorithms, Levitin §2.3–2.5.
 Interactive textbook with worked examples, quizzes, problems with solutions, glossary and sources.
