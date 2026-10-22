@@ -13,7 +13,7 @@ Interactive textbook with worked examples, quizzes, problems with solutions, glo
 
 The root `index.html` is a language chooser (it also redirects old `#page` links). Each version is one static page with
 animations (sorting, Tower of Hanoi, Fibonacci call tree, loop grid), charts, and in-page answer checking with saved progress.
-It needs no installation and works on a phone. Formulas are typeset with MathJax and fonts load from Google Fonts,
+It needs no installation and works on a phone. Fonts are self-hosted (`fonts/`); formulas are typeset with MathJax, loaded from a CDN,
 so an internet connection is needed.
 
 ## Code (`code/`)
@@ -32,6 +32,10 @@ python code/verify_answers.py
 
 Each run ends with `ALL CHECKS PASSED` (or a summary for `verify_answers.py`).
 
+## Task tracker
+
+`tracker_Counting_Steps.xlsx` — task table: stage, task, owner, reviewer, status, comment.
+
 ## Group
 
-Beiimbet, Arunaz, Nurbol
+Beiimbet Sansyzbay, Arunaz Makhabayeva, Nurbol Sairambay
