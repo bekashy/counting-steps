@@ -3,9 +3,18 @@
 Mathematical analysis of nonrecursive (Lecture 4) and recursive (Lecture 5) algorithms, Levitin §2.3–2.5.
 Interactive textbook with worked examples, quizzes, problems with solutions, glossary and sources.
 
-**Open the textbook:** see the GitHub Pages link of this repository (Settings → Pages).
-The site is one static page (`index.html`); it needs no installation and works on a phone.
-Formulas are typeset with MathJax and fonts load from Google Fonts, so an internet connection is needed.
+**Open the textbook:** the GitHub Pages link of this repository (Settings → Pages). Three language versions:
+
+| Language | Folder |
+|---|---|
+| Русский | `ru/` |
+| Қазақша | `kk/` |
+| English | `en/` |
+
+The root `index.html` is a language chooser (it also redirects old `#page` links). Each version is one static page with
+animations (sorting, Tower of Hanoi, Fibonacci call tree, loop grid), charts, and in-page answer checking with saved progress.
+It needs no installation and works on a phone. Formulas are typeset with MathJax and fonts load from Google Fonts,
+so an internet connection is needed.
 
 ## Code (`code/`)
 
@@ -25,4 +34,4 @@ Each run ends with `ALL CHECKS PASSED` (or a summary for `verify_answers.py`).
 
 ## Group
 
-Beiimbet, [participant 2], [participant 3]
+Beiimbet, Arunaz, Nurbol
